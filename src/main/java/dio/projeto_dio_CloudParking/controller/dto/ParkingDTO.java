@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class ParkingDTO implements Serializable {
-    private Long id;
+    private String id;
     private String license;
     private String state;
     private String model;

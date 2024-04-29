@@ -17,8 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Parking {
     @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String license;
     private String state;
