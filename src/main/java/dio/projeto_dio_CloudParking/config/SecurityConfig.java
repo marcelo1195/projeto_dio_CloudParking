@@ -15,17 +15,23 @@ public class SecurityConfig  {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().authenticated()
+                // Desabilita CSRF para simplificar, habilitar conforme necessário
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login").permitAll()  // Permite acesso sem autenticação a este caminho
+                        .anyRequest().authenticated()  // Todos os outros pedidos exigem autenticação
                 )
-                .formLogin(Customizer.withDefaults())
-                .rememberMe(rememberMe ->
-                        rememberMe.tokenValiditySeconds(86400) // = 24 hours
+                .formLogin(form -> form
+                        .loginPage("/login")  // Define a página de login customizada
+                        .permitAll()  // Permite a todos acessar a página de login
                 )
-                .logout(Customizer.withDefaults());
-
-        // Customize CSRF as needed
-        http.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")  // URL de redirecionamento após logout
+                        .permitAll()  // Permite a todos acessar o logout
+                )
+                .rememberMe(remember -> remember
+                        .tokenValiditySeconds(86400)  // Define a validade do token para 24 horas
+                );
 
         return http.build();
     }
