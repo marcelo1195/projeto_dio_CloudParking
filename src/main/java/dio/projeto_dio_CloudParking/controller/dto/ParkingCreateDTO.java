@@ -11,4 +11,5 @@ public class ParkingCreateDTO implements Serializable {
     private String state;
     private String model;
     private String color;
+    private String id;
 }
